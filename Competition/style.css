@@ -218,8 +218,62 @@ h2 { margin: 0; font-size: clamp(28px, 4vw, 48px); line-height: 1.25; text-align
 .topbar-inner { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 10px 20px; }
 .brand { display: flex; align-items: center; gap: 12px; font-weight: 700; letter-spacing: .04em; }
 .nav { display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-end; font-size: 15px; color: var(--muted); }
-.nav a { padding: 8px 16px; border-radius: 999px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08); transition: all 0.3s ease; }
+/* 修改：加上 position: relative 作為提示文字的定位基準 */
+.nav a { 
+    position: relative; 
+    padding: 8px 16px; 
+    border-radius: 999px; 
+    background: rgba(255,255,255,.05); 
+    border: 1px solid rgba(255,255,255,.08); 
+    transition: all 0.3s ease; 
+}
 .nav a:hover { color: var(--text); border-color: var(--accent); background: rgba(255, 107, 0, 0.1); }
+
+/* 新增：滑鼠懸停的註解文字區塊 */
+.nav a::after {
+    content: attr(data-tooltip); /* 自動讀取 HTML 裡的 data-tooltip 內容 */
+    position: absolute;
+    top: calc(100% + 12px); /* 顯示在按鈕正下方 12px 的位置 */
+    left: 50%;
+    transform: translateX(-50%) translateY(10px); /* 初始位置稍微往下退一點點 */
+    background: rgba(0, 0, 0, 0.85); /* 深色半透明背景 */
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    letter-spacing: 1px;
+    white-space: nowrap; /* 讓文字不換行 */
+    pointer-events: none; /* 讓滑鼠不會干擾到 tooltip */
+    opacity: 0; /* 預設隱藏 */
+    transition: opacity 0.3s ease, transform 0.3s ease; /* 漸變出現動畫 */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    z-index: 200;
+}
+
+/* 新增：Tooltip 上方的小三角形指示器 */
+.nav a::before {
+    content: '';
+    position: absolute;
+    top: calc(100% + 6px); /* 剛好接在按鈕下方 */
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    border-width: 0 6px 6px 6px;
+    border-style: solid;
+    border-color: transparent transparent rgba(0, 0, 0, 0.85) transparent;
+    opacity: 0; /* 預設隱藏 */
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 200;
+}
+
+/* 當滑鼠移上去時，顯示文字和小三角形並微微往上浮現 */
+.nav a:hover::after,
+.nav a:hover::before {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+
 
 /* ==========================================================================
    4. Background Video & Hero Canvas
@@ -822,7 +876,7 @@ h2 { margin: 0; font-size: clamp(28px, 4vw, 48px); line-height: 1.25; text-align
 /* 點點容器與設計 */
 .dj-dots-container {
     position: absolute;
-    bottom: 5%;
+    bottom: 8%;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -882,7 +936,7 @@ h2 { margin: 0; font-size: clamp(28px, 4vw, 48px); line-height: 1.25; text-align
 @media (max-width: 968px) {
     .dj-history-text { 
         position: absolute; 
-        top: 15%; 
+        top: 18%; 
         left: 5%; /* 手機版一樣固定在左側 5% */
         transform: translateY(-50%); 
         text-align: left;
