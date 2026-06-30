@@ -859,13 +859,59 @@ h2 { margin: 0; font-size: clamp(28px, 4vw, 48px); line-height: 1.25; text-align
 .dajingong-heading.is-exploding::before { left: 12px; text-shadow: -8px 0 #ff0000, 0 0 25px #ff0000; animation: hardcore-glitch-1 0.15s infinite linear alternate-reverse; }
 .dajingong-heading.is-exploding::after { left: -12px; text-shadow: 8px 0 #00ffff, 0 0 25px #00ffff; animation: hardcore-glitch-2 0.2s infinite linear alternate-reverse; }
 
-.dj-history-text { position: absolute; top: 13%; left: 8%; transform: translate(-50%, -50%); font-family: var(--font-serif); font-size: clamp(28px, 3vw, 30px); color: var(--danger); font-weight: 900; letter-spacing: 5px; text-shadow: 0 4px 20px rgba(0,0,0,0.2), 0 0 15px rgba(201, 59, 43, 0.6); z-index: 40; opacity: 0; pointer-events: none; }
-
-@media (max-width: 968px) {
-
-.dj-history-text { position: absolute; top: 15%; left: 32%; transform: translate(-50%, -50%); font-family: var(--font-serif); font-size: clamp(28px, 3vw, 30px); color: var(--danger); font-weight: 900; letter-spacing: 5px; text-shadow: 0 4px 20px rgba(0,0,0,0.2), 0 0 15px rgba(201, 59, 43, 0.6); z-index: 40; opacity: 0; pointer-events: none; }
-
+/* --- 修正後：大仁宮歷史文字外框設定 --- */
+.dj-history-text { 
+    position: absolute; 
+    top: 13%; 
+    left: 5%; /* 直接固定在畫面左側 5% 的位置 */
+    transform: translateY(-50%); /* 移除水平偏移，只保留垂直置中 */
+    text-align: left; /* 讓大字跟下方的小字整齊靠左對齊 */
+    
+    font-family: var(--font-serif); 
+    font-size: clamp(28px, 3vw, 30px); 
+    color: var(--danger); 
+    font-weight: 900; 
+    letter-spacing: 5px; 
+    text-shadow: 0 4px 20px rgba(0,0,0,0.2), 0 0 15px rgba(201, 59, 43, 0.6); 
+    z-index: 40; 
+    opacity: 0; 
+    pointer-events: none; 
 }
+
+/* --- 修正後：大仁宮歷史文字 (手機版) --- */
+@media (max-width: 968px) {
+    .dj-history-text { 
+        position: absolute; 
+        top: 15%; 
+        left: 5%; /* 手機版一樣固定在左側 5% */
+        transform: translateY(-50%); 
+        text-align: left;
+        
+        font-family: var(--font-serif); 
+        font-size: clamp(28px, 3vw, 30px); 
+        color: var(--danger); 
+        font-weight: 900; 
+        letter-spacing: 5px; 
+        text-shadow: 0 4px 20px rgba(0,0,0,0.2), 0 0 15px rgba(201, 59, 43, 0.6); 
+        z-index: 40; 
+        opacity: 0; 
+        pointer-events: none; 
+    }
+}
+
+/* 新增：大仁宮歷史照片的來源小字 */
+.dj-history-subtext {
+    font-family: var(--font-sans); /* 換回清晰的無襯線字體 */
+    font-size: 12px;               /* 字體縮小，不搶主標題風采 */
+    color: #000000;                /* 使用柔和的淡色 */
+    font-weight: normal;           /* 取消粗體 */
+    letter-spacing: 1.5px;         /* 微微拉開字距增加質感 */
+    margin-top: 8px;               /* 與上方大字保持一點呼吸空間 */
+    text-shadow: 0 2px 10px rgba(0,0,0,0.8); /* 確保在亮色照片上依然清晰 */
+    white-space: nowrap;           /* 確保這行字不會被切斷換行 */
+}
+
+
 
 @keyframes hardcore-shake {
     0% { transform: translate(0, 15vh) scale(1.2); filter: brightness(1); }
@@ -966,6 +1012,17 @@ h2 { margin: 0; font-size: clamp(28px, 4vw, 48px); line-height: 1.25; text-align
 .music-control.is-playing .music-icon { text-shadow: 0 0 10px var(--accent); }
 
 
+/* ==========================================================================
+   修正手機版音樂按鈕位置
+   ========================================================================== */
+@media (max-width: 768px) {
+    .music-control {
+        top: 1%;          /* 取消原本在上方的位置 */
+        right: 10px;        /* 距離右側 20px */
+        transform: scale(0.9); /* 手機版可以稍微將按鈕縮小一點點，避免干擾閱讀 */
+    }
+}
+
 
 
 /* ==========================================================================
@@ -1050,6 +1107,22 @@ h2 { margin: 0; font-size: clamp(28px, 4vw, 48px); line-height: 1.25; text-align
     border: none;
     background: transparent;
 }
+
+
+/* 新增：用於上下排列多張照片的群組容器 */
+.article-media-group {
+    flex: 0.85; /* 原本單張圖片是 flex: 1，改成 0.85 可以讓照片整體稍微縮小一點 */
+    display: flex;
+    flex-direction: column;
+    gap: 40px; /* 控制上下兩張照片之間的距離 */
+    width: 100%;
+}
+
+.article-media-group .article-media-placeholder {
+    flex: none; /* 避免內部的圖片被強制等高拉伸 */
+    width: 100%;
+}
+
 
 
 /* 新增：圖片下方的小人名/圖說樣式 */
@@ -1436,11 +1509,13 @@ h2 { margin: 0; font-size: clamp(28px, 4vw, 48px); line-height: 1.25; text-align
     width: 100%;
     display: flex;
     justify-content: center;
+    align-items: flex-end;
 }
 
 .dead-ships-img-wrapper {
     position: relative;
-    width: 100%;
+    width: 90%;
+    
     background: rgba(255, 255, 255, 0.02);
     border: 2px dashed rgba(255, 255, 255, 0.15);
     border-radius: var(--radius-lg);
@@ -1454,6 +1529,7 @@ h2 { margin: 0; font-size: clamp(28px, 4vw, 48px); line-height: 1.25; text-align
 
 .dead-ships-img-wrapper img {
     position: absolute;
+    
     top: 0;
     left: 0;
     width: 100%;
@@ -1747,3 +1823,22 @@ h2 { margin: 0; font-size: clamp(28px, 4vw, 48px); line-height: 1.25; text-align
 }
 
 
+
+
+/* ==========================================================================
+   新增：網頁最下方的製作團隊名單
+   ========================================================================== */
+.credits-section {
+    padding: 80px 20px; /* 上下留白，讓版面結尾有呼吸空間 */
+    position: relative;
+    z-index: 10;
+    text-align: center; /* 文字強制置中 */
+}
+
+.credits-section p {
+    color: var(--muted); /* 使用現有的柔和灰色，不搶內文焦點 */
+    font-size: clamp(16px, 1.8vw, 18px); /* 字體大小隨螢幕微調 */
+    line-height: 2; /* 增加行距，閱讀起來更舒適 */
+    margin: 0;
+    letter-spacing: 2px; /* 微微拉開字距，增加設計感 */
+}
